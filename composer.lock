@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9eb5a6b78e309d9a04dc8027a202f58e",
+    "content-hash": "4416d89b3e439e6b7785834edc1646a2",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -7953,16 +7953,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.24.1",
+            "version": "v1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "40b49abf01810453f73e3e239759f1736607f029"
+                "reference": "87620ef23319ebbdfc5b51dd6b6e7d12003f4564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/40b49abf01810453f73e3e239759f1736607f029",
-                "reference": "40b49abf01810453f73e3e239759f1736607f029",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/87620ef23319ebbdfc5b51dd6b6e7d12003f4564",
+                "reference": "87620ef23319ebbdfc5b51dd6b6e7d12003f4564",
                 "shasum": ""
             },
             "require": {
@@ -8021,7 +8021,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/maker-bundle/issues",
-                "source": "https://github.com/symfony/maker-bundle/tree/v1.24.1"
+                "source": "https://github.com/symfony/maker-bundle/tree/v1.24.2"
             },
             "funding": [
                 {
@@ -8037,7 +8037,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-11-25T17:19:22+00:00"
+            "time": "2020-11-27T17:49:17+00:00"
         },
         {
             "name": "symfony/phpunit-bridge",
