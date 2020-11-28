@@ -18,7 +18,7 @@ class Post
    private $id;
 
    /**
-    * @ORM\Column(type="string", length=255, options={"default": "anon"})
+    * @ORM\Column(type="string", length=255, nullable=true, options={"default": "anon"})
     */
    private $author;
 
@@ -28,9 +28,19 @@ class Post
    private $title;
 
    /**
-    * @ORM\Column(type="integer", options={"default": 0})
+    * @ORM\Column(type="integer", nullable=true, options={"default": 0})
     */
    private $likes;
+
+   /**
+    * @ORM\Column(type="datetime", nullable=true)
+    */
+   private $created_at;
+
+   public function __construct()
+   {
+      $this->created_at = new \DateTime();
+   }
 
    public function getId(): ?int
    {
@@ -69,6 +79,18 @@ class Post
    public function setLikes(int $likes): self
    {
        $this->likes = $likes;
+
+       return $this;
+   }
+
+   public function getCreatedAt(): ?\DateTimeInterface
+   {
+       return $this->created_at;
+   }
+
+   public function setCreatedAt(?\DateTimeInterface $created_at): self
+   {
+       $this->created_at = $created_at;
 
        return $this;
    }
