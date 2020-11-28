@@ -18,7 +18,7 @@ class Post
    private $id;
 
    /**
-    * @ORM\Column(type="string", length=255)
+    * @ORM\Column(type="string", length=255, options={"default": "anon"})
     */
    private $author;
 
@@ -28,7 +28,7 @@ class Post
    private $title;
 
    /**
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer", options={"default": 0})
     */
    private $likes;
 

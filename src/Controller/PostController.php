@@ -6,15 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LibftController extends AbstractController
+class PostController extends AbstractController
 {
     /**
-     * @Route("/libft", name="libft")
+     * @Route("/post", name="post")
      */
     public function index(): Response
     {
-        return $this->render('libft/index.html.twig', [
-            'controller_name' => 'LibftController',
+        return $this->render('post/index.html.twig', [
+            'controller_name' => 'PostController',
         ]);
     }
 }
