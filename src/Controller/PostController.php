@@ -23,4 +23,9 @@ class PostController extends AbstractController
         'controller_name' => 'PostController',
       ]);
     }
+
+    public function new(): Response
+    {
+      $post = new Post();
+    }
 }
