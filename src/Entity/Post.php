@@ -10,88 +10,84 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Post
 {
-  /**
-   * @ORM\Id
-   * @ORM\GeneratedValue
-   * @ORM\Column(type="integer")
-   */
-   private $id;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-   /**
-    * @ORM\Column(type="string", length=255, nullable=true, options={"default": "anon"})
-    */
-   private $author;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $title;
 
-   /**
-    * @ORM\Column(type="text")
-    */
-   private $title;
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
 
-   /**
-    * @ORM\Column(type="integer", nullable=true, options={"default": 0})
-    */
-   private $likes;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $author;
 
-   /**
-    * @ORM\Column(type="datetime", nullable=true)
-    */
-   private $created_at;
+    /**
+     * @ORM\ManyToOne(targetEntity=Subcategory::class, inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $subcategory;
 
-   public function __construct()
-   {
-      $this->created_at = new \DateTime();
-   }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-   public function getId(): ?int
-   {
-      return $this->id;
-   }
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
 
-   public function getAuthor(): ?string
-   {
-       return $this->author;
-   }
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
-   public function setAuthor(string $author): self
-   {
-       $this->author = $author;
+        return $this;
+    }
 
-       return $this;
-   }
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
 
-   public function getTitle(): ?string
-   {
-       return $this->title;
-   }
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
 
-   public function setTitle(string $title): self
-   {
-       $this->title = $title;
+        return $this;
+    }
 
-       return $this;
-   }
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
 
-   public function getLikes(): ?int
-   {
-       return $this->likes;
-   }
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
 
-   public function setLikes(int $likes): self
-   {
-       $this->likes = $likes;
+        return $this;
+    }
 
-       return $this;
-   }
+    public function getSubcategory(): ?Subcategory
+    {
+        return $this->subcategory;
+    }
 
-   public function getCreatedAt(): ?\DateTimeInterface
-   {
-       return $this->created_at;
-   }
+    public function setSubcategory(?Subcategory $subcategory): self
+    {
+        $this->subcategory = $subcategory;
 
-   public function setCreatedAt(?\DateTimeInterface $created_at): self
-   {
-       $this->created_at = $created_at;
-
-       return $this;
-   }
+        return $this;
+    }
 }
