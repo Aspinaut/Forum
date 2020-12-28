@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-use App\Entity\Post;
-use App\Repository\PostRepository;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 
 class PostController extends AbstractController
 {
@@ -18,10 +18,10 @@ class PostController extends AbstractController
      */
     public function index(): Response
     {
-        $repository = $this->getDoctrine()->getRepository(Post::class);
-        $all = $repository->findAll();
+        $repository = $this->getDoctrine()->getRepository(Category::class);
+        $categories = $repository->findAll();
         return $this->render('post/index.html.twig', [
-            'all' => $all,
+            'categories' => $categories,
             'controller_name' => 'PostController',
         ]);
     }
