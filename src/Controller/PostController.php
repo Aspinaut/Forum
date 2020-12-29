@@ -11,11 +11,16 @@ use App\Repository\CategoryRepository;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+
 class PostController extends AbstractController
 {
     /**
-    *
+    * @var ObjectManager
     */
+    private $em;
+
     public function __construct(CategoryRepository $repoCategory)
     {
       $this->repository = $repoCategory;
@@ -35,6 +40,40 @@ class PostController extends AbstractController
             'posts' => $posts,
             'categories' => $categories,
         ]);
+    }
+
+    /**
+    * @Route("/post/create", name="post_create")
+    */
+    public function create(CategoryRepository $repoCategory, Request $request, EntityManagerInterface $em): Response
+    {
+      $categories = $repoCategory->findAll();
+      $repo = $this->getDoctrine()->getRepository(Post::class);
+
+      $post = new Post();
+
+      $form = $this->createFormBuilder($post)
+                   ->add('title')
+                   ->add('content')
+                   ->add('author')
+                   ->getForm();
+      dump($request);
+
+      $form->handleRequest($request);
+
+
+      if ($form->isSubmitted())
+      {
+        $post->setCreatedAt(new \DateTime());
+        $em->persist($post);
+        $em->flush();
+      }
+
+      return $this->render('post/create.html.twig', [
+        'post' => $post,
+        'formPost' => $form->createView(),
+        'categories' => $categories,
+      ]);
     }
 
     /**

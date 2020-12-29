@@ -13,7 +13,6 @@
       <div class="post-container">
         <h3 class="post-title">{{ post.title }}</h3>
         <p class="post-metadata">Posted by {{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}</p>
-        <p class="post-content">{{ post.content }}</p>
         <a class="btn btn-primary" href="{{ path('post_show', {'id': post.id }) }}">See more</a>
       </div>
       <br>
