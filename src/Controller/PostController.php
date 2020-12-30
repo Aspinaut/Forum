@@ -7,11 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Category;
-use App\Repository\CategoryRepository;
 use App\Entity\Subcategory;
-use App\Repository\SubcategoryRepository;
 use App\Entity\Post;
+use App\Entity\Comment;
+use App\Repository\CategoryRepository;
+use App\Repository\SubcategoryRepository;
 use App\Repository\PostRepository;
+use App\Form\CommentType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -87,14 +89,30 @@ class PostController extends AbstractController
     /**
     * @Route("/post/{id}", name="post_show")
     */
-    public function show(CategoryRepository $repoCategory, $id): Response
+    public function show(CategoryRepository $repoCategory, $id, Request $request, EntityManagerInterface $em): Response
     {
       $categories = $repoCategory->findAll();
       $repo = $this->getDoctrine()->getRepository(Post::class);
       $post = $repo->find($id);
+      $comment = new Comment();
 
+      $formComment = $this->createForm(CommentType::class, $comment);
+      $formComment->handleRequest($request);
+
+      if ($formComment->isSubmitted() && $formComment->isValid())
+      {
+        $comment->setCreatedAt(new \DateTime())
+                ->setPostId($post);
+        $em->persist($comment);
+        $em->flush();
+
+        return $this->redirectToRoute('post_show', [
+          'id' => $id
+        ]);
+      }
       return $this->render('post/show.html.twig', [
         'post' => $post,
+        'formComment' => $formComment->createView(),
         'categories' => $categories,
       ]);
     }

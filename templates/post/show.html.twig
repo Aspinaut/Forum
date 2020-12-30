@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme formComment 'bootstrap_4_layout.html.twig' %}
+
 {% block body %}
   <style>
       .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -13,6 +15,27 @@
         <p class="post-content">{{ post.content }}</p>
       </div>
       <br>
+      <div class="post-comments">
+        <h3>Comments</h3>
+        {% for comment in post.comments %}
+          <div>
+            <p>{{ comment.author }}</p>
+            <p>{{ comment.content }}</p>
+            <br>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="post-commentForm">
+        {% if not app.user %}
+          <h3>Sign in to comment</h3>
+        {% else %}
+          {{ form_start(formComment) }}
+          {{ form_row(formComment.author) }}
+          {{ form_row(formComment.content) }}
+          <button type="submit" class="btn btn-info">Add your comment</button>
+          {{ form_end(formComment) }}
+        {% endif %}
+      </div>
   </div>
 
 {% endblock %}

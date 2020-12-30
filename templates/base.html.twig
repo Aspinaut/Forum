@@ -30,6 +30,12 @@
             </li>
           {% endfor %}
           <a class="nav-link" href="{{ path('post_create') }}">Create a post</a>
+          {% if not app.user %}
+              <a href="{{ path('login') }}" class="nav-link">Sign in</a>
+              <a href="{{ path('security_registration') }}" class="nav-link">Sign up</a>
+          {% else %}
+              <a href="{{ path('logout') }}" class="nav-link">Log out</a>
+          {% endif %}
         </ul>
       </div>
     </nav>
