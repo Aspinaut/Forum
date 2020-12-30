@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Sign up</h1>
+
+    {% form_theme formRegister 'bootstrap_4_layout.html.twig' %}
+
+    {{ form_start(formRegister) }}
+
+    {{ form_row(formRegister.email, {'attr': {'placeholder': "Your email"}}) }}
+    {{ form_row(formRegister.username, {'attr': {'placeholder': "Your username"}}) }}
+    {{ form_row(formRegister.password, {'attr': {'placeholder': "Your password"}}) }}
+    {{ form_row(formRegister.confirm_password, {'attr': {'placeholder': "Confirm your password"}}) }}
+
+    {{ form_widget(formRegister) }}
+      <button type="submit" class="btn btn-success">Submit</button>
+    {{ form_end(formRegister) }}
+</div>
+{% endblock %}
