@@ -9,6 +9,8 @@
   <div class="example-wrapper">
     <h1>Creating post</h1>
 
+    {% form_theme formPost 'bootstrap_4_layout.html.twig' %}
+
     {{ form_start(formPost) }}
 
     {{ form_row(formPost.title, {'attr': {'Placeholder': "Title"}}) }}

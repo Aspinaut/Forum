@@ -66,11 +66,15 @@ class PostController extends AbstractController
       $form->handleRequest($request);
 
 
-      if ($form->isSubmitted())
+      if ($form->isSubmitted() && $form->isValid())
       {
         $post->setCreatedAt(new \DateTime());
         $em->persist($post);
         $em->flush();
+
+        return $this->redirectToRoute('post_show', [
+          'id' => $post->getId()
+        ]);
       }
 
       return $this->render('post/create.html.twig', [
