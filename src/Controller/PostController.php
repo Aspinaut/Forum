@@ -57,6 +57,7 @@ class PostController extends AbstractController
                    ->add('content')
                    ->add('author')
                    ->getForm();
+      $post->setSubcategory($request->request->getIdByTitle('postCategory'));
       dump($request);
 
       $form->handleRequest($request);

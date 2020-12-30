@@ -17,7 +17,7 @@
     <select name="postCategory" id="postCategory">
       {% for category in categories %}
           {% for subcategory in category.subcategories %}
-            <option value="">{{ subcategory.title }}</option>
+            <option value="{{ subcategory.id }}">{{ subcategory.title }}</option>
           {% endfor %}
       {% endfor %}
     </select>
