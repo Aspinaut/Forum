@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Entity\Subcategory;
+use App\Repository\SubcategoryRepository;
 use App\Entity\Post;
 use App\Repository\PostRepository;
 
@@ -45,7 +47,7 @@ class PostController extends AbstractController
     /**
     * @Route("/post/create", name="post_create")
     */
-    public function create(CategoryRepository $repoCategory, Request $request, EntityManagerInterface $em): Response
+    public function create(CategoryRepository $repoCategory, Request $request, EntityManagerInterface $em, SubcategoryRepository $repoSubcategory): Response
     {
       $categories = $repoCategory->findAll();
       $repo = $this->getDoctrine()->getRepository(Post::class);
@@ -57,7 +59,8 @@ class PostController extends AbstractController
                    ->add('content')
                    ->add('author')
                    ->getForm();
-      $post->setSubcategory($request->request->getId('postCategory'));
+      $subcategory = $request->request->get('postCategory');
+      $post->setSubcategory($repoSubcategory->find((int) $subcategory));
       dump($request);
 
       $form->handleRequest($request);
