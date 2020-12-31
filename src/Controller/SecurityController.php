@@ -12,6 +12,7 @@ use App\Entity\Subcategory;
 use App\Repository\SubcategoryRepository;
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 
 use App\Entity\User;
 use App\Form\RegistrationType;
@@ -35,6 +36,7 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/registration", name="security_registration")
+     * @Route("/registration/user/{id}", name="security_registration_user")
      */
     public function registration(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, CategoryRepository $repoCategory): Response
     {
