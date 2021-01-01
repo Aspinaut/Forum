@@ -56,6 +56,11 @@ class Post
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $is_solved;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -195,5 +200,17 @@ class Post
       }
 
       return false;
+    }
+
+    public function getIsSolved(): ?bool
+    {
+        return $this->is_solved;
+    }
+
+    public function setIsSolved(bool $is_solved): self
+    {
+        $this->is_solved = $is_solved;
+
+        return $this;
     }
 }

@@ -37,7 +37,6 @@ class MailerController extends AbstractController
         $categories = $repoCategory->findAll();
 
         $user_email = $request->request->get('_username');
-        dump($request);
         if ($repoUser->findByEmail($user_email))
         {
           $email = (new TemplatedEmail())

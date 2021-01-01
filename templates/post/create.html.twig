@@ -16,7 +16,7 @@
 
     {{ form_row(formPost.title, {'attr': {'Placeholder': "Title"}}) }}
     {{ form_row(formPost.content, {'attr': {'Placeholder': "Content"}}) }}
-    {{ form_row(formPost.author, {'attr': {'Placeholder': "Author"}}) }}
+    <input name="author" type="text" value="{{ app.user.username }}" hidden>
     <select name="postCategory" id="postCategory">
       {% for category in categories %}
           {% for subcategory in category.subcategories %}

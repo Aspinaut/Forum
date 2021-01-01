@@ -11,6 +11,7 @@ use App\Entity\Subcategory;
 use App\Entity\Post;
 use App\Entity\PostLike;
 use App\Entity\Comment;
+use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\SubcategoryRepository;
 use App\Repository\PostRepository;
@@ -61,18 +62,17 @@ class PostController extends AbstractController
       $form = $this->createFormBuilder($post)
                    ->add('title')
                    ->add('content')
-                   ->add('author')
                    ->getForm();
+
       $subcategory = $request->request->get('postCategory');
       $post->setSubcategory($repoSubcategory->find((int) $subcategory));
-      dump($request);
 
       $form->handleRequest($request);
-
-
       if ($form->isSubmitted() && $form->isValid())
       {
-        $post->setCreatedAt(new \DateTime());
+        $post->setCreatedAt(new \DateTime())
+             ->setIsSolved(0)
+             ->setAuthor($request->request->get('author'));
         $em->persist($post);
         $em->flush();
 
