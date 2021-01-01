@@ -9,10 +9,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Category;
 use App\Entity\Subcategory;
 use App\Entity\Post;
+use App\Entity\PostLike;
 use App\Entity\Comment;
 use App\Repository\CategoryRepository;
 use App\Repository\SubcategoryRepository;
 use App\Repository\PostRepository;
+use App\Repository\PostLikeRepository;
 use App\Form\CommentType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -115,5 +117,48 @@ class PostController extends AbstractController
         'formComment' => $formComment->createView(),
         'categories' => $categories,
       ]);
+    }
+
+    /**
+    * @Route("/post/{id}/like", name="post_like")
+    */
+    public function like(Post $post, EntityManagerInterface $em, PostLikeRepository $repoLike): Response
+    {
+      $user = $this->getUser();
+
+      if(!$user){
+       return $this->json([
+        'code' => 403,
+        'message' => "Unauthorized"], 403);
+      }
+
+      if ($post->isLikedByUser($user)) {
+        $like = $repoLike->findOneBy([
+          'post' => $post,
+          'user' => $user
+        ]);
+
+        $em->remove($like);
+        $em->flush();
+
+        return $this->json([
+          'code' => 200,
+          'message' => 'Successfully unliked',
+          'likes' => $repoLike->count(['post' => $post])
+        ], 200);
+      }
+
+      $like = new PostLike();
+      $like->setPost($post)
+           ->setUser($user);
+
+      $em->persist($like);
+      $em->flush();
+
+      return $this->json([
+        'code' => 200,
+        'message' => 'Successfully liked',
+        'likes' => $repoLike->count(['post' => $post])
+      ], 200);
     }
 }

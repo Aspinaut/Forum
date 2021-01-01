@@ -38,7 +38,7 @@ class SecurityController extends AbstractController
      * @Route("/registration", name="security_registration")
      * @Route("/registration/user/{id}", name="security_registration_user")
      */
-    public function registration(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, CategoryRepository $repoCategory): Response
+    public function registration(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, CategoryRepository $repoCategory, UserRepository $repoUser): Response
     {
       $categories = $repoCategory->findAll();
       $user = new User();
