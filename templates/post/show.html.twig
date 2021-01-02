@@ -8,34 +8,74 @@
       .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
   </style>
 
-  <div class="example-wrapper">
-      <div class="post-container">
-        <h3 class="post-title">{{ post.title }}</h3>
-        <p class="post-metadata">Posted by {{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}</p>
+  <div class="container">
+    <div class="post-container">
+      {% if app.user and post.author is same as app.user.username %}
+        <br>
+        <div class="post-buttons">
+          <a href="{{ path('post_edit', {'id': post.id}) }}" class="btn btn-info">Edit this post</a>
+          <a href="{{ path('post_delete', {'id': post.id}) }}" class="btn btn-danger">Delete this post</a>
+        </div>
+        <br>
+        <div class="custom-control custom-checkbox">
+          <input name="checkbox" type="checkbox" class="custom-control-input" id="customCheck1">
+          {% if not post.isSolved %}
+              <label class="custom-control-label unsolved" for="customCheck1">Set this post as solved</label>
+          {% else %}
+              <label class="custom-control-label solved" for="customCheck1">Set this post as unsolved</label>
+          {% endif %}
+        </div>
+      {% endif %}
+      <br>
+      <div class="jumbotron">
+        <h1 class="display-5 post-title">{{ post.title }}</h1>
+        <p class="lead post-metadata">{{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}</p>
+        <hr class="my-4">
         <p class="post-content">{{ post.content }}</p>
       </div>
-      <br>
-      <div class="post-comments">
-        <h3>Comments</h3>
-        {% for comment in post.comments %}
-          <div>
-            <p>{{ comment.author }}</p>
-            <p>{{ comment.content }}</p>
-            <br>
-          </div>
-        {% endfor %}
-      </div>
-      <div class="post-commentForm">
-        {% if not app.user %}
-          <h3>Sign in to comment</h3>
-        {% else %}
-          {{ form_start(formComment) }}
-          {{ form_row(formComment.author) }}
-          {{ form_row(formComment.content) }}
-          <button type="submit" class="btn btn-info">Add your comment</button>
-          {{ form_end(formComment) }}
-        {% endif %}
-      </div>
+    </div>
+    <br>
+    <div class="post-comments">
+      {% for comment in post.comments %}
+        <div>
+          <p>{{ comment.author }}</p>
+          <p>{{ comment.content }}</p>
+          <br>
+          {% if app.user and app.user.username is same as comment.author %}
+            <div class="comment-buttons">
+              <a href="{{ path('comment_delete', {'id': comment.id}) }}" class="btn btn-danger">Delete this comment</a>
+            </div>
+          {% endif %}
+          <hr class="my-4">
+        </div>
+      {% endfor %}
+
+    </div>
+    <div class="post-commentForm">
+      {% if not app.user %}
+        <h3><a href="{{ path('login') }}">Sign in to comment</a></h3>
+      {% else %}
+        {{ form_start(formComment) }}
+
+        {{ form_row(formComment.content) }}
+
+        <input name="author" type="text" value="{{ app.user.username }}" hidden>
+        <button type="submit" class="btn btn-success">Add your comment</button>
+
+        {{ form_end(formComment) }}
+      {% endif %}
+    </div>
   </div>
 
+{% endblock %}
+{% block javascripts %}
+  <script>
+    function onClickBtnSolved(){
+
+    }
+
+    document.querySelectorAll('input#customCheck1').forEach(function(link){
+      link.addEventListener('click', onClickBtnSolved);
+    })
+  </script>
 {% endblock %}

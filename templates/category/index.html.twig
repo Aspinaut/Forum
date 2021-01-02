@@ -9,19 +9,35 @@
   </style>
 
   <div class="example-wrapper">
+      <div class="filters">
+        <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked="">
+          <label class="custom-control-label" for="customRadio1">Sort by newest</label>
+        </div>
+        <div class="custom-control custom-radio">
+          <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+          <label class="custom-control-label" for="customRadio2">Sort by like rate</label>
+        </div>
+      </div>
+      <br>
       {% for post in posts %}
-        <div class="post-container">
-          <h3 class="post-title">{{ post.title }}</h3>
-          <p class="post-metadata">Posted by {{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}</p>
-          <a class="btn btn-primary" href="{{ path('post_show', {'id': post.id }) }}">See more</a>
+
+      <div class="card border-{% if post.isSolved %}success{% else %}danger{% endif %}
+
+      mb-3 post-container" style="max-width: 50rem;">
+        <div class="card-header post-metadata">{{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}
           <a href="{{ path('post_like', {'id': post.id}) }}" class="btn btn-link js-like">
-            {% if app.user and post.isLikedByUser(app.user) %}
-              <i class="fas fa-thumbs-up"></i>
+          {% if app.user and post.isLikedByUser(app.user) %}
+            <i class="fas fa-thumbs-up"></i>
             {% else %}
-              <i class="far fa-thumbs-up"></i>
-            {% endif %}
+            <i class="far fa-thumbs-up"></i>
+          {% endif %}
             <span class="js-likes">{{ post.likes | length }}</span>
           </a>
+        </div>
+          <div class="card-body">
+            <a href="{{ path('post_show', {'id': post.id }) }}" class="post-title">{{ post.title }}</a>
+          </div>
         </div>
         <br>
       {% endfor %}

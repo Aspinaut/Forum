@@ -51,13 +51,17 @@ class PostController extends AbstractController
 
     /**
     * @Route("/post/create", name="post_create")
+    * @Route("/post/{id}/edit", name="post_edit")
     */
-    public function create(CategoryRepository $repoCategory, Request $request, EntityManagerInterface $em, SubcategoryRepository $repoSubcategory): Response
+    public function create(Post $post = null, CategoryRepository $repoCategory, Request $request, EntityManagerInterface $em, SubcategoryRepository $repoSubcategory): Response
     {
       $categories = $repoCategory->findAll();
       $repo = $this->getDoctrine()->getRepository(Post::class);
 
-      $post = new Post();
+      if (!$post)
+      {
+        $post = new Post();
+      }
 
       $form = $this->createFormBuilder($post)
                    ->add('title')
@@ -70,9 +74,12 @@ class PostController extends AbstractController
       $form->handleRequest($request);
       if ($form->isSubmitted() && $form->isValid())
       {
-        $post->setCreatedAt(new \DateTime())
-             ->setIsSolved(0)
-             ->setAuthor($request->request->get('author'));
+        if (!$post->getId())
+        {
+          $post->setCreatedAt(new \DateTime())
+          ->setIsSolved(0)
+          ->setAuthor($request->request->get('author'));
+        }
         $em->persist($post);
         $em->flush();
 
@@ -84,7 +91,8 @@ class PostController extends AbstractController
       return $this->render('post/create.html.twig', [
         'post' => $post,
         'formPost' => $form->createView(),
-        'categories' => $categories,
+        'editMode' => $post->getId() !== null,
+        'categories' => $categories
       ]);
     }
 
@@ -98,12 +106,15 @@ class PostController extends AbstractController
       $post = $repo->find($id);
       $comment = new Comment();
 
-      $formComment = $this->createForm(CommentType::class, $comment);
+      $formComment = $this->createFormBuilder($comment)
+                          ->add('content')
+                          ->getForm();
       $formComment->handleRequest($request);
 
       if ($formComment->isSubmitted() && $formComment->isValid())
       {
         $comment->setCreatedAt(new \DateTime())
+                ->setAuthor($request->request->get('author'))
                 ->setPostId($post);
         $em->persist($comment);
         $em->flush();
@@ -112,6 +123,7 @@ class PostController extends AbstractController
           'id' => $id
         ]);
       }
+
       return $this->render('post/show.html.twig', [
         'post' => $post,
         'formComment' => $formComment->createView(),
@@ -160,5 +172,29 @@ class PostController extends AbstractController
         'message' => 'Successfully liked',
         'likes' => $repoLike->count(['post' => $post])
       ], 200);
+    }
+    /**
+    * @Route("/post/{id}/delete", name="post_delete")
+    */
+    public function deletePost(Post $post, EntityManagerInterface $em): Response
+    {
+      $em->remove($post);
+      $em->flush();
+
+      return $this->redirectToRoute('home');
+    }
+
+    /**
+    * @Route("/comment/{id}/delete", name="comment_delete")
+    */
+    public function deleteComment(Comment $comment, EntityManagerInterface $em): Response
+    {
+      $id = $comment->getPostId();
+      $em->remove($comment);
+      $em->flush();
+
+      return $this->redirectToRoute('post_show', [
+        'id' => $id->getId()
+      ]);
     }
 }

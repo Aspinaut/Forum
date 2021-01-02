@@ -25,7 +25,7 @@
       <div class="card border-{% if post.isSolved %}success{% else %}danger{% endif %}
 
       mb-3 post-container" style="max-width: 50rem;">
-        <div class="card-header post-metadata">{{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }}
+      <div class="card-header post-metadata">{{ post.author }} on {{ post.createdAt | date('d/m/Y') }} at {{ post.createdAt | date('H:i') }} in {{ post.subcategory.category.title }} / {{  post.subcategory.title }}
           <a href="{{ path('post_like', {'id': post.id}) }}" class="btn btn-link js-like">
           {% if app.user and post.isLikedByUser(app.user) %}
             <i class="fas fa-thumbs-up"></i>
