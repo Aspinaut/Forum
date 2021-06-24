@@ -38,7 +38,7 @@
     <div class="post-comments">
       {% for comment in post.comments %}
         <div>
-          <p>{{ comment.author }}</p>
+          <p>{{ comment.author }} on {{ comment.createdAt | date('d/m/Y') }} at {{ comment.createdAt | date('H:i')  }}</p>
           <p>{{ comment.content }}</p>
           <br>
           {% if app.user and app.user.username is same as comment.author %}
